@@ -1,58 +1,34 @@
-def analyze_dna(sequence):
+import streamlit as st
 
-    sequence = sequence.upper()
+st.title("GeneScope")
+st.subheader("Smart DNA Sequence Analysis System")
 
-    a = sequence.count("A")
-    t = sequence.count("T")
-    g = sequence.count("G")
-    c = sequence.count("C")
+dna = st.text_input("Enter DNA Sequence")
 
-    length = len(sequence)
+if st.button("Analyze"):
 
-    gc_content = ((g + c) / length) * 100
+    dna = dna.upper()
 
-    reverse_seq = sequence[::-1]
+    a = dna.count("A")
+    t = dna.count("T")
+    g = dna.count("G")
+    c = dna.count("C")
 
-    complement = ""
+    length = len(dna)
 
-    for base in sequence:
+    if length == 0:
+        st.error("Please enter DNA sequence")
+    else:
 
-        if base == "A":
-            complement += "T"
+        gc = ((g+c)/length)*100
 
-        elif base == "T":
-            complement += "A"
+        st.write("Length:", length)
+        st.write("A Count:", a)
+        st.write("T Count:", t)
+        st.write("G Count:", g)
+        st.write("C Count:", c)
+        st.write("GC Content:", round(gc,2), "%")
 
-        elif base == "G":
-            complement += "C"
+        reverse = dna[::-1]
 
-        elif base == "C":
-            complement += "G"
-
-    reverse_complement = complement[::-1]
-
-    return {
-        "Length": length,
-        "A Count": a,
-        "T Count": t,
-        "G Count": g,
-        "C Count": c,
-        "GC Content": round(gc_content, 2),
-        "Reverse Sequence": reverse_seq,
-        "Complement": complement,
-        "Reverse Complement": reverse_complement
-    }
-
-
-dna = input("Enter DNA Sequence: ")
-
-result = analyze_dna(dna)
-
-for key, value in result.items():
-    print(key, ":", value)
-
-print("\nComplexity Analysis")
-print("Best Case : O(n)")
-print("Average Case : O(n)")
-print("Worst Case : O(n)")
-print("Space Complexity : O(n)")
+        st.write("Reverse Sequence:", reverse)
